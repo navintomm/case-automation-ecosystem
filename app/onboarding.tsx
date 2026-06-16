@@ -4,8 +4,9 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useOnboardingStore } from '../store/onboardingStore';
 import { colors, radius } from '../theme/tokens';
-import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
+import Animated, { FadeInDown, FadeInRight, useSharedValue, useAnimatedStyle, withRepeat, withSequence, withTiming, Easing } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 
 const { width, height } = Dimensions.get('window');
 
@@ -33,6 +34,37 @@ const SLIDES = [
   }
 ];
 
+const SlideItem = ({ item }: { item: typeof SLIDES[0] }) => {
+  const floatAnim = useSharedValue(0);
+
+  React.useEffect(() => {
+    floatAnim.value = withRepeat(
+      withSequence(
+        withTiming(-15, { duration: 2000, easing: Easing.inOut(Easing.ease) }),
+        withTiming(0, { duration: 2000, easing: Easing.inOut(Easing.ease) })
+      ),
+      -1,
+      true
+    );
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: floatAnim.value }]
+  }));
+
+  return (
+    <View style={styles.slide}>
+      <Animated.View entering={FadeInDown.delay(200)} style={[styles.iconCircle, { backgroundColor: `${item.color}15` }, animatedStyle]}>
+        <Ionicons name={item.icon as any} size={80} color={item.color} />
+      </Animated.View>
+      <Animated.View entering={FadeInRight.delay(400)}>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.description}>{item.description}</Text>
+      </Animated.View>
+    </View>
+  );
+};
+
 export default function OnboardingScreen() {
   const router = useRouter();
   const completeOnboarding = useOnboardingStore(s => s.completeOnboarding);
@@ -40,8 +72,9 @@ export default function OnboardingScreen() {
   const flatListRef = useRef<FlatList>(null);
 
   const handleNext = () => {
+    if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     if (currentIndex < SLIDES.length - 1) {
-      flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
+      flatListRef.current?.scrollToOffset({ offset: (currentIndex + 1) * width, animated: true });
     } else {
       handleFinish();
     }
@@ -52,18 +85,8 @@ export default function OnboardingScreen() {
     router.replace('/');
   };
 
-  const renderItem = ({ item, index }: any) => {
-    return (
-      <View style={styles.slide}>
-        <Animated.View entering={FadeInDown.delay(200)} style={[styles.iconCircle, { backgroundColor: `${item.color}15` }]}>
-          <Ionicons name={item.icon as any} size={80} color={item.color} />
-        </Animated.View>
-        <Animated.View entering={FadeInRight.delay(400)}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.description}>{item.description}</Text>
-        </Animated.View>
-      </View>
-    );
+  const renderItem = ({ item }: any) => {
+    return <SlideItem item={item} />;
   };
 
   return (
