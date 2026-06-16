@@ -58,6 +58,11 @@ export default function Step1Screen() {
   const [modalDefaultRole, setModalDefaultRole] = useState('Petitioner');
   const [expandedDocGroup, setExpandedDocGroup] = useState<string | null>(null);
   
+  // Track if user enabled existing case proceedings
+  const [hasExistingProceedings, setHasExistingProceedings] = useState(
+    () => Object.values(caseNumbers).some(v => !!v)
+  );
+  
   const { width } = useWindowDimensions();
   const isMobile = width < 480;
   
@@ -164,6 +169,17 @@ export default function Step1Screen() {
       setErrors((prev) => ({ ...prev, documentType: '' }));
     }
   };
+
+  // Auto-fill Advocate Details on mount
+  React.useEffect(() => {
+    if (!advocate.name) {
+      setAdvocateField('name', 'Adv. Hari Prasad K.');
+      setAdvocateField('rollNumber', 'K/1245/2012');
+      setAdvocateField('firmName', 'Apex Chambers');
+      setAdvocateField('email', 'hariprasad.k@example.com');
+      setAdvocateField('mobile', '9876543210');
+    }
+  }, []);
 
   const swipeGesture = Gesture.Pan()
     .onEnd((event) => {
@@ -308,7 +324,7 @@ export default function Step1Screen() {
               })}
             </TouchableOpacity>
 
-            {/* 1.4 Case References Card (Optional) */}
+            {/* 1.4 Existing Case Proceedings Card (Optional) */}
             <TouchableOpacity
               activeOpacity={0.95}
               onPress={() => setActiveSection('references')}
@@ -317,67 +333,90 @@ export default function Step1Screen() {
                 activeSection === 'references' && styles.cardActive,
               ]}
             >
-              <View style={styles.cardHeaderRow}>
-                <Text style={styles.cardTitle}>Case References</Text>
+              <View style={[styles.cardHeaderRow, { paddingBottom: 12 }]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                  <TouchableOpacity
+                    onPress={(e) => {
+                      e.stopPropagation();
+                      setHasExistingProceedings(!hasExistingProceedings);
+                      if (!hasExistingProceedings) setActiveSection('references');
+                    }}
+                    style={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: 6,
+                      borderWidth: 2,
+                      borderColor: hasExistingProceedings ? colors.gold : colors.border,
+                      backgroundColor: hasExistingProceedings ? colors.gold : 'transparent',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {hasExistingProceedings && <Ionicons name="checkmark" size={16} color="#FFF" />}
+                  </TouchableOpacity>
+                  <Text style={styles.cardTitle}>Existing Case Proceeding Details</Text>
+                </View>
                 <View style={styles.optionalBadge}>
                   <Text style={styles.optionalBadgeText}>Optional</Text>
                 </View>
               </View>
 
-              <View style={styles.grid2Col}>
-                <View style={styles.gridItem}>
-                  <CaseInput
-                    label="Existing Case No."
-                    placeholder="e.g. WP(C) 1234/2026"
-                    value={caseNumbers.existing || ''}
-                    onChangeText={(val) => setCaseNumber('existing', val)}
-                  />
+              <View style={{ opacity: hasExistingProceedings ? 1 : 0.4 }} pointerEvents={hasExistingProceedings ? 'auto' : 'none'}>
+                <View style={styles.grid2Col}>
+                  <View style={styles.gridItem}>
+                    <CaseInput
+                      label="Existing Case No."
+                      placeholder="e.g. WP(C) 1234/2026"
+                      value={caseNumbers.existing || ''}
+                      onChangeText={(val) => setCaseNumber('existing', val)}
+                    />
+                  </View>
+                  <View style={styles.gridItem}>
+                    <CaseInput
+                      label="Previous Case No."
+                      placeholder="e.g. OS 450/2024"
+                      value={caseNumbers.previous || ''}
+                      onChangeText={(val) => setCaseNumber('previous', val)}
+                    />
+                  </View>
                 </View>
-                <View style={styles.gridItem}>
-                  <CaseInput
-                    label="Previous Case No."
-                    placeholder="e.g. OS 450/2024"
-                    value={caseNumbers.previous || ''}
-                    onChangeText={(val) => setCaseNumber('previous', val)}
-                  />
-                </View>
-              </View>
 
-              <View style={styles.grid2Col}>
-                <View style={styles.gridItem}>
-                  <CaseInput
-                    label="Connected Case No."
-                    placeholder="e.g. IA 1/2026"
-                    value={caseNumbers.connected || ''}
-                    onChangeText={(val) => setCaseNumber('connected', val)}
-                  />
+                <View style={styles.grid2Col}>
+                  <View style={styles.gridItem}>
+                    <CaseInput
+                      label="Connected Case No."
+                      placeholder="e.g. IA 1/2026"
+                      value={caseNumbers.connected || ''}
+                      onChangeText={(val) => setCaseNumber('connected', val)}
+                    />
+                  </View>
+                  <View style={styles.gridItem}>
+                    <CaseInput
+                      label="FIR Number"
+                      placeholder="e.g. Cr 120/2026 Puzhakkal"
+                      value={caseNumbers.fir || ''}
+                      onChangeText={(val) => setCaseNumber('fir', val)}
+                    />
+                  </View>
                 </View>
-                <View style={styles.gridItem}>
-                  <CaseInput
-                    label="FIR Number"
-                    placeholder="e.g. Cr 120/2026 Puzhakkal"
-                    value={caseNumbers.fir || ''}
-                    onChangeText={(val) => setCaseNumber('fir', val)}
-                  />
-                </View>
-              </View>
 
-              <View style={styles.grid2Col}>
-                <View style={styles.gridItem}>
-                  <CaseInput
-                    label="Appeal Number"
-                    placeholder="e.g. RFA 50/2026"
-                    value={caseNumbers.appeal || ''}
-                    onChangeText={(val) => setCaseNumber('appeal', val)}
-                  />
-                </View>
-                <View style={styles.gridItem}>
-                  <CaseInput
-                    label="Execution Number"
-                    placeholder="e.g. EP 12/2026"
-                    value={caseNumbers.execution || ''}
-                    onChangeText={(val) => setCaseNumber('execution', val)}
-                  />
+                <View style={styles.grid2Col}>
+                  <View style={styles.gridItem}>
+                    <CaseInput
+                      label="Appeal Number"
+                      placeholder="e.g. RFA 50/2026"
+                      value={caseNumbers.appeal || ''}
+                      onChangeText={(val) => setCaseNumber('appeal', val)}
+                    />
+                  </View>
+                  <View style={styles.gridItem}>
+                    <CaseInput
+                      label="Execution Number"
+                      placeholder="e.g. EP 12/2026"
+                      value={caseNumbers.execution || ''}
+                      onChangeText={(val) => setCaseNumber('execution', val)}
+                    />
+                  </View>
                 </View>
               </View>
             </TouchableOpacity>

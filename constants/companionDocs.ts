@@ -65,7 +65,7 @@ export const COMPANION_DOCS_GROUPS: CompanionDocGroup[] = [
     id: '4.5',
     title: '4.5 Document List',
     items: [
-      { id: '4.5.document_list', label: 'Auto-generated from uploads', alwaysOn: true }
+      { id: '4.5.document_list', label: 'Auto-generated from uploads' }
     ]
   },
   {

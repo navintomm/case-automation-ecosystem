@@ -118,7 +118,7 @@ export default function AdvocateDashboard() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.statsRow}
         data={[
-          { label: 'Active Matters', value: activeMatters.length.toString(), color: colors.navy },
+          { label: 'Active Case Files', value: activeMatters.length.toString(), color: colors.navy },
           { label: 'Pending Tasks', value: tasks.length.toString(), color: colors.warning },
           { label: 'Due Today', value: '3', color: colors.error },
           { label: 'Completed', value: '8', color: colors.navy },
@@ -140,8 +140,8 @@ export default function AdvocateDashboard() {
 
       {/* Active Matters Section */}
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Active Matters</Text>
-        <TouchableOpacity onPress={() => handleMockAction('View All Matters')}>
+        <Text style={styles.sectionTitle}>Active Case Files</Text>
+        <TouchableOpacity onPress={() => handleMockAction('View All Case Files')}>
           <Text style={styles.sectionAction}>View All</Text>
         </TouchableOpacity>
       </View>
@@ -155,7 +155,7 @@ export default function AdvocateDashboard() {
       ) : activeMatters.length === 0 ? (
         <View style={styles.emptyState}>
           <Ionicons name="folder-open-outline" size={32} color={colors.textMuted} />
-          <Text style={styles.emptyText}>No active matters found.</Text>
+          <Text style={styles.emptyText}>No active case files found.</Text>
         </View>
       ) : (
         <FlatList

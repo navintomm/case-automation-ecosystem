@@ -76,6 +76,7 @@ export default function RootLayout() {
           <Stack
         screenOptions={{
           headerShown: false,
+          gestureEnabled: false,
           contentStyle: { backgroundColor: colors.cream },
         }}
       >

@@ -25,7 +25,7 @@ export default function MatterDetailScreen() {
   if (!matter) {
     return (
       <View style={styles.center}>
-        <Text>Matter not found.</Text>
+        <Text>Case File not found.</Text>
       </View>
     );
   }
@@ -126,7 +126,7 @@ export default function MatterDetailScreen() {
               <View style={styles.timelineItem}>
                 <View style={styles.timelineDot} />
                 <View style={styles.timelineBody}>
-                  <Text style={styles.timelineTitle}>Matter Created</Text>
+                  <Text style={styles.timelineTitle}>Case File Created</Text>
                   <Text style={styles.timelineSub}>{matter.caseOwner}</Text>
                 </View>
                 <Text style={styles.timelineDate}>{new Date(matter.createdAt).toLocaleDateString()}</Text>
@@ -154,7 +154,7 @@ export default function MatterDetailScreen() {
           {activeTab === 'Tasks' && (
             <View style={styles.emptyTab}>
               <Ionicons name="checkmark-done-outline" size={40} color={colors.textMuted} />
-              <Text style={styles.emptyText}>No tasks assigned for this matter.</Text>
+              <Text style={styles.emptyText}>No tasks assigned for this case file.</Text>
             </View>
           )}
         </View>

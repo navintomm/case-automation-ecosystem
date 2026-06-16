@@ -17,9 +17,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors, radius, cardShadow } from '../theme/tokens';
 import { useClerkStore, Task } from '../store/clerkStore';
 
-type FilterStatus = 'All' | Task['status'];
+type FilterStatus = Task['status'];
 
-const FILTERS: FilterStatus[] = ['All', 'Pending', 'In Progress', 'Completed'];
+const FILTERS: FilterStatus[] = ['Pending', 'In Progress', 'Completed'];
 
 const PRIORITY_BADGE: Record<Task['priority'], { bg: string; text: string }> = {
   Urgent: { bg: '#FDE8E8', text: colors.error },
@@ -90,7 +90,7 @@ function ClerkTaskCard({ task, onPress }: { task: Task; onPress: () => void }) {
 export default function ClerkPortalScreen() {
   const router = useRouter();
   const tasks  = useClerkStore((s) => s.tasks);
-  const [activeFilter, setActiveFilter] = useState<FilterStatus>('All');
+  const [activeFilter, setActiveFilter] = useState<FilterStatus>('Pending');
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = () => {
@@ -100,9 +100,7 @@ export default function ClerkPortalScreen() {
     }, 1000);
   };
 
-  const filtered = activeFilter === 'All'
-    ? tasks
-    : tasks.filter((t) => t.status === activeFilter);
+  const filtered = tasks.filter((t) => t.status === activeFilter);
 
   // Initials for avatar (mock clerk)
   const initials = 'AK';

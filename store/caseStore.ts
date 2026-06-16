@@ -151,7 +151,7 @@ const initialState = {
     totalRelief: 0,
   },
   companionDocs: {
-    '4.5.document_list': true, // Auto-generated — always ON & pre-checked
+    '4.5.document_list': true, // Auto-generated — pre-checked by default
   },
   witnesses: [],
   valuation: '',
@@ -234,7 +234,6 @@ export const useCaseStore = create<CaseState>()(
 
       toggleCompanionDoc: (key) =>
         set((state) => {
-          if (key === '4.5.document_list') return state; // Always on, cannot toggle off
           const current = !!state.companionDocs[key];
           return {
             ...state,
