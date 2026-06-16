@@ -14,6 +14,8 @@ import {
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
 import { colors, radius } from '../theme/tokens';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 
@@ -22,21 +24,67 @@ export default function ReviewDocumentScreen() {
   const [showChangesModal, setShowChangesModal] = useState(false);
   const [changesText, setChangesText] = useState('');
 
-  const handleApprove = () => {
-    if (Platform.OS === 'web') {
-      const confirm = window.confirm('Approve this draft and generate PDF filing package?');
-      if (confirm) {
+  const handleApprove = async () => {
+    try {
+      const htmlContent = `
+        <html>
+          <head>
+            <style>
+              body { font-family: 'Times New Roman', serif; padding: 40px; line-height: 1.6; }
+              .header { text-align: center; font-weight: bold; margin-bottom: 20px; font-size: 18px; }
+              .parties { margin: 30px 0; font-size: 16px; }
+              .heading { font-weight: bold; margin-top: 20px; text-transform: uppercase; }
+              p { text-align: justify; }
+            </style>
+          </head>
+          <body>
+            <div class="header">
+              IN THE HIGH COURT OF KERALA AT ERNAKULAM<br/>
+              WP(C) NO. _____ OF 2026
+            </div>
+            <div class="parties">
+              Suresh Kumar ...................................... Petitioner<br/>
+              <div style="text-align: center; margin: 10px 0;">Vs</div>
+              State of Kerala ................................. Respondent
+            </div>
+            <div class="heading">I. FACTUAL SYNOPSIS</div>
+            <p>1. That the Petitioner is a law-abiding citizen of India residing at the address mentioned in the cause title. The Petitioner is aggrieved by the arbitrary and illegal actions of the Respondent authority.</p>
+            <p>2. That on 12.05.2026, the Respondent issued a notice without providing the Petitioner an opportunity to be heard, violating the principles of natural justice.</p>
+            
+            <div class="heading">II. GROUNDS</div>
+            <p>A. BECAUSE the impugned order is arbitrary, illegal, and violates Article 14 of the Constitution of India.</p>
+            <p>B. BECAUSE the Respondent authority failed to consider the relevant evidence submitted by the Petitioner.</p>
+            
+            <div class="heading">III. PRAYER</div>
+            <p>In light of the above facts and circumstances, it is most respectfully prayed that this Hon'ble Court may be pleased to:</p>
+            <p>a) Issue a writ of certiorari quashing the impugned notice dated 12.05.2026.</p>
+            <p>b) Pass any other order as this Hon'ble Court deems fit.</p>
+            <br/><br/><br/>
+            <div style="text-align: right; margin-top: 50px;">
+              <strong>Adv. Priya</strong><br/>
+              Counsel for Petitioner<br/>
+              Enrollment No. K/1234/2015
+            </div>
+          </body>
+        </html>
+      `;
+      
+      const { uri } = await Print.printToFileAsync({ html: htmlContent });
+      
+      if (Platform.OS === 'web') {
+        Toast.show({ type: 'success', text1: 'PDF Generated', text2: 'Opening in new tab...' });
+        window.open(uri, '_blank');
         router.push('/pdf-ready' as any);
+      } else {
+        const canShare = await Sharing.isAvailableAsync();
+        if (canShare) {
+          await Sharing.shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
+          router.push('/pdf-ready' as any);
+        }
       }
-    } else {
-      Alert.alert(
-        'Approve Draft',
-        'Approve this draft and generate PDF filing package?',
-        [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Approve', style: 'default', onPress: () => router.push('/pdf-ready' as any) },
-        ]
-      );
+    } catch (e) {
+      console.error(e);
+      Toast.show({ type: 'error', text1: 'Failed to generate PDF' });
     }
   };
 

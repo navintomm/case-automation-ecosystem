@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, Pla
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { colors, radius } from '../theme/tokens';
+import { colors as staticColors, radius } from '../theme/tokens';
 import Toast from 'react-native-toast-message';
+import { useThemeStore } from '../store/themeStore';
 
 export default function AdvocateProfileScreen() {
   const router = useRouter();
+  const { mode, colors, toggleTheme } = useThemeStore();
 
   const handleSignOut = () => {
     router.replace('/' as any);
@@ -22,8 +24,8 @@ export default function AdvocateProfileScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.cream }]}>
+      <View style={[styles.header, { backgroundColor: colors.navy }]}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={24} color="#FFFFFF" />
         </TouchableOpacity>
@@ -32,43 +34,52 @@ export default function AdvocateProfileScreen() {
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Animated.View entering={FadeInDown.delay(100)} style={styles.profileCard}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>P</Text>
+        <Animated.View entering={FadeInDown.delay(100)} style={[styles.profileCard, { backgroundColor: colors.cardBg, borderColor: colors.border }]}>
+          <View style={[styles.avatar, { backgroundColor: colors.gold, shadowColor: colors.gold }]}>
+            <Text style={[styles.avatarText, { color: colors.navy }]}>P</Text>
           </View>
-          <Text style={styles.name}>Adv. Priya</Text>
-          <Text style={styles.email}>priya@case.law</Text>
+          <Text style={[styles.name, { color: colors.textPrimary }]}>Adv. Priya</Text>
+          <Text style={[styles.email, { color: colors.textMuted }]}>priya@case.law</Text>
           
           <View style={styles.badge}>
-            <Text style={styles.badgeText}>Senior Advocate</Text>
+            <Text style={[styles.badgeText, { color: colors.navy }]}>Senior Advocate</Text>
           </View>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(200)} style={styles.section}>
-          <Text style={styles.sectionTitle}>Account Settings</Text>
+          <Text style={[styles.sectionTitle, { color: colors.textMuted }]}>Account Settings</Text>
           
-          <TouchableOpacity style={styles.menuItem} onPress={() => handleMockAction('Change Password')}>
+          <TouchableOpacity style={[styles.menuItem, { backgroundColor: colors.cardBg, borderColor: colors.border }]} onPress={() => handleMockAction('Change Password')}>
             <View style={styles.menuLeft}>
               <Ionicons name="lock-closed-outline" size={20} color={colors.navy} />
-              <Text style={styles.menuText}>Change Password</Text>
+              <Text style={[styles.menuText, { color: colors.textPrimary }]}>Change Password</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
           </TouchableOpacity>
           
-          <TouchableOpacity style={styles.menuItem} onPress={() => handleMockAction('Notification Preferences')}>
+          <TouchableOpacity style={[styles.menuItem, { backgroundColor: colors.cardBg, borderColor: colors.border }]} onPress={() => handleMockAction('Notification Preferences')}>
             <View style={styles.menuLeft}>
               <Ionicons name="notifications-outline" size={20} color={colors.navy} />
-              <Text style={styles.menuText}>Notification Preferences</Text>
+              <Text style={[styles.menuText, { color: colors.textPrimary }]}>Notification Preferences</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
           </TouchableOpacity>
           
-          <TouchableOpacity style={styles.menuItem} onPress={() => handleMockAction('Personal Details')}>
+          <TouchableOpacity style={[styles.menuItem, { backgroundColor: colors.cardBg, borderColor: colors.border }]} onPress={() => handleMockAction('Personal Details')}>
             <View style={styles.menuLeft}>
               <Ionicons name="person-outline" size={20} color={colors.navy} />
-              <Text style={styles.menuText}>Personal Details</Text>
+              <Text style={[styles.menuText, { color: colors.textPrimary }]}>Personal Details</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.menuItem, { backgroundColor: colors.cardBg, borderColor: colors.border }]} onPress={toggleTheme}>
+            <View style={styles.menuLeft}>
+              <Ionicons name={mode === 'light' ? 'moon' : 'sunny'} size={20} color={colors.navy} />
+              <Text style={[styles.menuText, { color: colors.textPrimary }]}>
+                {mode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+              </Text>
+            </View>
           </TouchableOpacity>
         </Animated.View>
 
@@ -88,7 +99,7 @@ export default function AdvocateProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.cream,
+    backgroundColor: staticColors.cream,
     paddingTop: Platform.OS === 'android' ? 24 : 0,
   },
   header: {
@@ -97,7 +108,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     height: 60,
-    backgroundColor: colors.navy,
   },
   backBtn: {
     padding: 8,
@@ -124,17 +134,17 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: staticColors.border,
   },
   avatar: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: colors.gold,
+    backgroundColor: staticColors.gold,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
-    shadowColor: colors.gold,
+    shadowColor: staticColors.gold,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -143,18 +153,18 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 32,
     fontFamily: 'Inter_700Bold',
-    color: colors.navy,
+    color: staticColors.navy,
   },
   name: {
     fontSize: 20,
     fontFamily: 'Inter_700Bold',
-    color: colors.textPrimary,
+    color: staticColors.textPrimary,
     marginBottom: 4,
   },
   email: {
     fontSize: 14,
     fontFamily: 'Inter_400Regular',
-    color: colors.textMuted,
+    color: staticColors.textMuted,
     marginBottom: 16,
   },
   badge: {
@@ -168,7 +178,7 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 12,
     fontFamily: 'Inter_600SemiBold',
-    color: colors.navy,
+    color: staticColors.navy,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
@@ -178,7 +188,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontFamily: 'Inter_600SemiBold',
-    color: colors.textMuted,
+    color: staticColors.textMuted,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 12,
@@ -193,7 +203,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     marginBottom: 8,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: staticColors.border,
   },
   menuLeft: {
     flexDirection: 'row',
@@ -202,7 +212,7 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 15,
     fontFamily: 'Inter_500Medium',
-    color: colors.textPrimary,
+    color: staticColors.textPrimary,
     marginLeft: 12,
   },
   signOutBtn: {
@@ -218,12 +228,12 @@ const styles = StyleSheet.create({
   signOutText: {
     fontSize: 15,
     fontFamily: 'Inter_600SemiBold',
-    color: colors.error,
+    color: staticColors.error,
   },
   version: {
     fontSize: 12,
     fontFamily: 'Inter_400Regular',
-    color: colors.textMuted,
+    color: staticColors.textMuted,
     textAlign: 'center',
     marginTop: 20,
   },

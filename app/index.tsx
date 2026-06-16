@@ -14,12 +14,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
+import { useOnboardingStore } from '../store/onboardingStore';
 
 export default function LandingScreen() {
   const router = useRouter();
   const isReducedMotion = useReducedMotion();
   const { width } = useWindowDimensions();
-  const isNarrow = width < 400;
+  const isNarrow = width < 768;
+
+  const hasCompletedOnboarding = useOnboardingStore(s => s.hasCompletedOnboarding);
+
+  React.useEffect(() => {
+    if (!hasCompletedOnboarding) {
+      router.replace('/onboarding' as any);
+    }
+  }, [hasCompletedOnboarding]);
 
   const enteringAnimation = isReducedMotion
     ? undefined

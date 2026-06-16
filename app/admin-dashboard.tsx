@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, Platform, Dimensions, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import { colors, radius } from '../theme/tokens';
 import { useAdminStore } from '../store/adminStore';
 import { LinearGradient } from 'expo-linear-gradient';
 import Toast from 'react-native-toast-message';
+import { LineChart } from 'react-native-chart-kit';
 
 const { width } = Dimensions.get('window');
 const isTablet = width >= 768;
@@ -154,6 +155,35 @@ export default function AdminDashboardScreen() {
               </View>
               <Text style={styles.qlText}>Servers</Text>
             </TouchableOpacity>
+          </View>
+        </Animated.View>
+
+        {/* Analytics Section */}
+        <Animated.View entering={FadeInDown.delay(550).springify()}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Document Generation Trends</Text>
+          </View>
+          <View style={[styles.statCard, { padding: 8, marginBottom: 24 }]}>
+            <LineChart
+              data={{
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                datasets: [{ data: [12, 19, 15, 25, 22, 30, 45] }]
+              }}
+              width={isTablet ? width - 80 : width - 56}
+              height={220}
+              chartConfig={{
+                backgroundColor: "#ffffff",
+                backgroundGradientFrom: "#ffffff",
+                backgroundGradientTo: "#ffffff",
+                decimalPlaces: 0,
+                color: (opacity = 1) => `rgba(124, 58, 237, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(154, 163, 178, ${opacity})`,
+                propsForDots: { r: "5", strokeWidth: "2", stroke: "#7C3AED" },
+                propsForBackgroundLines: { stroke: "#E2E0DA", strokeDasharray: "" }
+              }}
+              bezier
+              style={{ borderRadius: 16 }}
+            />
           </View>
         </Animated.View>
 

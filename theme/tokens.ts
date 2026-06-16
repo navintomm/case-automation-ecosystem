@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-export const colors = {
+export const lightColors = {
   navy:        '#1B2A4A',
   navyLight:   '#243560',
   navyLighter: '#324575',
@@ -20,6 +20,30 @@ export const colors = {
   border:      '#E2E0DA',
   borderFocus: '#C9963A',
 };
+
+export const darkColors = {
+  navy:        '#0B1120',      // Deeper black/navy
+  navyLight:   '#162032',
+  navyLighter: '#1E293B',
+  gold:        '#EAB308',      // Brighter gold for dark mode
+  goldLight:   '#FDE047',
+  goldLighter: '#FEF08A',
+  cream:       '#020617',      // Very dark background instead of cream
+  white:       '#0F172A',      // Cards are dark slate
+  cardBg:      '#0F172A',
+  verified:    '#4ADE80',
+  success:     '#4ADE80',
+  warning:     '#F59E0B',
+  error:       '#F87171',
+  textPrimary: '#F8FAFC',      // White text
+  textSecond:  '#CBD5E1',      // Light gray text
+  textMuted:   '#64748B',      // Darker gray text
+  border:      '#1E293B',      // Dark borders
+  borderFocus: '#EAB308',
+};
+
+// Fallback for static imports (will use light theme)
+export const colors = lightColors;
 
 export const typography = {
   displayFont: 'DMSerifDisplay_400Regular',
