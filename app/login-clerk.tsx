@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   KeyboardAvoidingView,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -77,9 +78,11 @@ export default function ClerkLoginScreen() {
 
           {/* Hero */}
           <View style={styles.heroSection}>
-            <View style={styles.iconCircle}>
-              <Ionicons name="clipboard-outline" size={32} color={colors.navy} />
-            </View>
+            <Image 
+              source={require('../assets/images/logo.png')} 
+              style={styles.logoImage} 
+              resizeMode="contain"
+            />
             <Text style={styles.heroTitle}>Clerk Login</Text>
             <View style={styles.goldRule} />
           </View>
@@ -227,14 +230,10 @@ const styles = StyleSheet.create({
     marginTop: 28,
     marginBottom: 28,
   },
-  iconCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: 'rgba(255,255,255,0.14)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 14,
+  logoImage: {
+    width: 80,
+    height: 80,
+    marginBottom: 16,
   },
   heroTitle: {
     fontSize: 28,

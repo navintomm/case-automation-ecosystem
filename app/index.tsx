@@ -6,6 +6,7 @@ import {
   useWindowDimensions,
   StyleSheet,
   Platform,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -86,19 +87,11 @@ export default function LandingScreen() {
         <Animated.View entering={enteringAnimation} style={{ alignItems: 'center', marginBottom: 40 }}>
 
           {/* Icon */}
-          <View style={{
-            width: 64,
-            height: 64,
-            borderRadius: 32,
-            backgroundColor: 'rgba(201, 150, 58, 0.12)',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: 20,
-            borderWidth: 1,
-            borderColor: 'rgba(201, 150, 58, 0.25)',
-          }}>
-            <Ionicons name="scale" size={32} color="#C9963A" />
-          </View>
+          <Image 
+            source={require('../assets/images/logo.png')} 
+            style={{ width: 80, height: 80, marginBottom: 20 }} 
+            resizeMode="contain"
+          />
 
           {/* Main title — lighter weight, more elegant */}
           <Text style={{
