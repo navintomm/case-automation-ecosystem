@@ -6,6 +6,7 @@ import Animated, { FadeInDown, FadeInRight, useSharedValue, useAnimatedStyle, wi
 import { colors, radius } from '../theme/tokens';
 import { useAdminStore } from '../store/adminStore';
 import { LinearGradient } from 'expo-linear-gradient';
+import Toast from 'react-native-toast-message';
 
 const { width } = Dimensions.get('window');
 const isTablet = width >= 768;
@@ -19,8 +20,16 @@ export default function AdminDashboardScreen() {
   const activeMatters = 124;
   const docsGenerated = 892;
 
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const headerOpacity = useSharedValue(0);
+
+  const handleMockAction = (feature: string) => {
+    Toast.show({
+      type: 'info',
+      text1: 'Feature in Development',
+      text2: `Mock Data: ${feature} coming soon!`,
+    });
+  };
   
   useEffect(() => {
     headerOpacity.value = withTiming(1, { duration: 800, easing: Easing.out(Easing.exp) });
@@ -132,14 +141,14 @@ export default function AdminDashboardScreen() {
               <Text style={styles.qlText}>Knowledge</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.quickLinkItem}>
+            <TouchableOpacity style={styles.quickLinkItem} onPress={() => handleMockAction('Audit Logs')}>
               <View style={[styles.qlIconBox, { backgroundColor: '#F5F3FF' }]}>
                 <Ionicons name="list" size={24} color="#8B5CF6" />
               </View>
               <Text style={styles.qlText}>Audit</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.quickLinkItem}>
+            <TouchableOpacity style={styles.quickLinkItem} onPress={() => handleMockAction('Server Management')}>
               <View style={[styles.qlIconBox, { backgroundColor: '#ECFDF5' }]}>
                 <Ionicons name="server" size={24} color="#059669" />
               </View>
@@ -152,7 +161,7 @@ export default function AdminDashboardScreen() {
         <Animated.View entering={FadeInDown.delay(600).springify()} style={styles.activitySection}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Recent Activity</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleMockAction('View All Activity')}>
               <Text style={styles.sectionAction}>View All</Text>
             </TouchableOpacity>
           </View>

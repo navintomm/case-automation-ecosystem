@@ -13,6 +13,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { colors, radius, cardShadow } from '../theme/tokens';
+import Toast from 'react-native-toast-message';
 import { useMattersStore } from '../store/mattersStore';
 import { useNotificationsStore } from '../store/notificationsStore';
 import SkeletonCard from '../components/ui/SkeletonCard';
@@ -40,11 +41,19 @@ export default function AdvocateDashboard() {
     return () => clearTimeout(timer);
   }, []);
 
-  const onRefresh = () => {
+  const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-    }, 1000);
+    }, 1500);
+  }, []);
+
+  const handleMockAction = (feature: string) => {
+    Toast.show({
+      type: 'info',
+      text1: 'Feature in Development',
+      text2: `Mock Data: ${feature} coming soon!`,
+    });
   };
 
   const handleCreateDraft = () => {
@@ -132,7 +141,7 @@ export default function AdvocateDashboard() {
       {/* Active Matters Section */}
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Active Matters</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleMockAction('View All Matters')}>
           <Text style={styles.sectionAction}>View All</Text>
         </TouchableOpacity>
       </View>
@@ -162,7 +171,7 @@ export default function AdvocateDashboard() {
       {/* Pending Works Section */}
       <View style={[styles.sectionHeader, { marginTop: 16 }]}>
         <Text style={styles.sectionTitle}>Pending Tasks</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleMockAction('Add Pending Task')}>
           <Text style={styles.sectionAction}>+ Add Task</Text>
         </TouchableOpacity>
       </View>

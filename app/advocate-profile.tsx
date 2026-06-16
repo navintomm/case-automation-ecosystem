@@ -4,12 +4,21 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { colors, radius } from '../theme/tokens';
+import Toast from 'react-native-toast-message';
 
 export default function AdvocateProfileScreen() {
   const router = useRouter();
 
   const handleSignOut = () => {
     router.replace('/' as any);
+  };
+
+  const handleMockAction = (feature: string) => {
+    Toast.show({
+      type: 'info',
+      text1: 'Feature in Development',
+      text2: `Mock Data: ${feature} section is coming soon!`,
+    });
   };
 
   return (
@@ -38,7 +47,7 @@ export default function AdvocateProfileScreen() {
         <Animated.View entering={FadeInDown.delay(200)} style={styles.section}>
           <Text style={styles.sectionTitle}>Account Settings</Text>
           
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => handleMockAction('Change Password')}>
             <View style={styles.menuLeft}>
               <Ionicons name="lock-closed-outline" size={20} color={colors.navy} />
               <Text style={styles.menuText}>Change Password</Text>
@@ -46,7 +55,7 @@ export default function AdvocateProfileScreen() {
             <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
           </TouchableOpacity>
           
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => handleMockAction('Notification Preferences')}>
             <View style={styles.menuLeft}>
               <Ionicons name="notifications-outline" size={20} color={colors.navy} />
               <Text style={styles.menuText}>Notification Preferences</Text>
@@ -54,7 +63,7 @@ export default function AdvocateProfileScreen() {
             <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
           </TouchableOpacity>
           
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => handleMockAction('Personal Details')}>
             <View style={styles.menuLeft}>
               <Ionicons name="person-outline" size={20} color={colors.navy} />
               <Text style={styles.menuText}>Personal Details</Text>
