@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   SafeAreaView,
   BackHandler,
+  Platform,
 } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
@@ -48,8 +49,8 @@ export default function Step3Screen() {
         router.push('/step2');
         return true;
       };
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => backHandler.remove();
     }, [])
   );
 

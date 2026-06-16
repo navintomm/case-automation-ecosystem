@@ -183,8 +183,8 @@ export default function AdminDashboardScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={[]} // empty data, we render everything in header for now, or we could render activities here
-        keyExtractor={(item) => item.toString()}
+        data={[] as any[]} // empty data, we render everything in header for now, or we could render activities here
+        keyExtractor={(item, index) => index.toString()}
         renderItem={() => null}
         ListHeaderComponent={ListHeader}
         showsVerticalScrollIndicator={false}
