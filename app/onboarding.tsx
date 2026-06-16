@@ -74,7 +74,9 @@ export default function OnboardingScreen() {
   const handleNext = () => {
     if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     if (currentIndex < SLIDES.length - 1) {
-      flatListRef.current?.scrollToOffset({ offset: (currentIndex + 1) * width, animated: true });
+      const nextIndex = currentIndex + 1;
+      flatListRef.current?.scrollToOffset({ offset: nextIndex * width, animated: true });
+      setCurrentIndex(nextIndex);
     } else {
       handleFinish();
     }
@@ -108,10 +110,13 @@ export default function OnboardingScreen() {
         showsHorizontalScrollIndicator={false}
         pagingEnabled
         bounces={false}
-        onMomentumScrollEnd={(e) => {
+        onScroll={(e) => {
           const index = Math.round(e.nativeEvent.contentOffset.x / width);
-          setCurrentIndex(index);
+          if (index !== currentIndex && index >= 0 && index < SLIDES.length) {
+            setCurrentIndex(index);
+          }
         }}
+        scrollEventThrottle={16}
       />
 
       <View style={styles.footer}>
