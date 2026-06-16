@@ -194,20 +194,22 @@ const Slide = ({ slide, index, scrollX }: any) => {
 
   return (
     <Animated.View style={[styles.slideContainer, animatedStyle]}>
-      {/* Illustration Zone */}
-      <View style={styles.illustrationZone}>
-        {getIllustration(slide.id)}
-      </View>
-
-      {/* Text Zone */}
-      <View style={styles.textZone}>
-        <View style={[styles.tagPill, { backgroundColor: slide.accentColor + '15', borderColor: slide.accentColor + '30' }]}>
-          <Text style={[styles.tagPillText, { color: slide.accentColor }]}>{slide.tag}</Text>
+      <View style={styles.slideInner}>
+        {/* Illustration Zone */}
+        <View style={styles.illustrationZone}>
+          {getIllustration(slide.id)}
         </View>
 
-        <Text style={styles.title}>{slide.title}</Text>
-        <Text style={styles.subtitle}>{slide.subtitle}</Text>
-        <Text style={styles.description}>{slide.description}</Text>
+        {/* Text Zone */}
+        <View style={styles.textZone}>
+          <View style={[styles.tagPill, { backgroundColor: slide.accentColor + '15', borderColor: slide.accentColor + '30' }]}>
+            <Text style={[styles.tagPillText, { color: slide.accentColor }]}>{slide.tag}</Text>
+          </View>
+
+          <Text style={styles.title}>{slide.title}</Text>
+          <Text style={styles.subtitle}>{slide.subtitle}</Text>
+          <Text style={styles.description}>{slide.description}</Text>
+        </View>
       </View>
     </Animated.View>
   );
@@ -228,7 +230,7 @@ export default function OnboardingScreen() {
         const nextIndex = currentIndex + 1;
         flatListRef.current?.scrollToOffset({ offset: nextIndex * width, animated: true });
       }
-    }, 6000);
+    }, 10000);
     return () => clearInterval(timer);
   }, [currentIndex]);
 
@@ -355,15 +357,21 @@ const styles = StyleSheet.create({
     width,
     flex: 1,
     paddingBottom: 100, // Make room for footer
-  },
-  illustrationZone: {
-    flex: 0.45,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+  },
+  slideInner: {
+    width: '100%',
+    maxWidth: 500,
+    alignItems: 'center',
+    gap: 32,
+  },
+  illustrationZone: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 240,
   },
   textZone: {
-    flex: 0.55,
     alignItems: 'center',
     paddingHorizontal: 20,
     gap: 12,
