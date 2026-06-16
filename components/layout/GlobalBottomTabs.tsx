@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
+import * as Haptics from 'expo-haptics';
 import { colors, radius } from '../../theme/tokens';
 import { useClerkStore } from '../../store/clerkStore';
 
@@ -29,7 +31,10 @@ export default function GlobalBottomTabs() {
         <TouchableOpacity
           key={label}
           style={styles.centerTabContainer}
-          onPress={() => router.push(route as any)}
+          onPress={() => {
+            if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            router.push(route as any);
+          }}
           accessibilityRole="button"
           accessibilityLabel={label}
         >
@@ -47,7 +52,10 @@ export default function GlobalBottomTabs() {
       <TouchableOpacity
         key={label}
         style={styles.tabItem}
-        onPress={() => router.push(route as any)}
+        onPress={() => {
+          if (Platform.OS !== 'web') Haptics.selectionAsync();
+          router.push(route as any);
+        }}
         accessibilityRole="button"
         accessibilityLabel={label}
       >
@@ -64,7 +72,7 @@ export default function GlobalBottomTabs() {
   };
 
   return (
-    <View style={styles.container}>
+    <BlurView intensity={85} tint="light" style={styles.container}>
       {activeRole === 'advocate' && (
         <>
           {renderTab('Home', 'home', '/dashboard')}
@@ -92,14 +100,14 @@ export default function GlobalBottomTabs() {
           {renderTab('Settings', 'settings', '/admin-dashboard')}
         </>
       )}
-    </View>
+    </BlurView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     height: 70,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.75)',
     borderTopWidth: 1,
     borderTopColor: colors.border,
     flexDirection: 'row',

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   useWindowDimensions,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,6 +13,7 @@ import Animated, { FadeInUp, useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 
 export default function LandingScreen() {
   const router = useRouter();
@@ -189,7 +191,10 @@ export default function LandingScreen() {
                 alignItems: 'center',
                 gap: 12,
               }]}
-              onPress={() => router.push('/login-advocate')}
+              onPress={() => {
+                if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                router.push('/login-advocate');
+              }}
               activeOpacity={0.92}
             >
               <View style={[{ alignItems: 'center' }, isNarrow && { flexDirection: 'row', gap: 12, flex: 1 }]}>
@@ -240,7 +245,10 @@ export default function LandingScreen() {
                   width: isNarrow ? 'auto' : '100%',
                   alignItems: 'center',
                 }}
-                onPress={() => router.push('/login-advocate')}
+                onPress={() => {
+                  if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  router.push('/login-advocate');
+                }}
               >
                 <Text style={{
                   fontFamily: 'Inter_700Bold',
@@ -280,7 +288,10 @@ export default function LandingScreen() {
                 alignItems: 'center',
                 gap: 12,
               }]}
-              onPress={() => router.push('/login-clerk')}
+              onPress={() => {
+                if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                router.push('/login-clerk');
+              }}
               activeOpacity={0.92}
             >
               <View style={[{ alignItems: 'center' }, isNarrow && { flexDirection: 'row', gap: 12, flex: 1 }]}>
@@ -331,7 +342,10 @@ export default function LandingScreen() {
                   width: isNarrow ? 'auto' : '100%',
                   alignItems: 'center',
                 }}
-                onPress={() => router.push('/login-clerk')}
+                onPress={() => {
+                  if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  router.push('/login-clerk');
+                }}
               >
                 <Text style={{
                   fontFamily: 'Inter_700Bold',
@@ -371,7 +385,10 @@ export default function LandingScreen() {
                 alignItems: 'center',
                 gap: 12,
               }]}
-              onPress={() => router.push('/login-admin')}
+              onPress={() => {
+                if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                router.push('/login-admin');
+              }}
               activeOpacity={0.92}
             >
               <View style={[{ alignItems: 'center' }, isNarrow && { flexDirection: 'row', gap: 12, flex: 1 }]}>
@@ -422,7 +439,10 @@ export default function LandingScreen() {
                   width: isNarrow ? 'auto' : '100%',
                   alignItems: 'center',
                 }}
-                onPress={() => router.push('/login-admin')}
+                onPress={() => {
+                  if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  router.push('/login-admin');
+                }}
               >
                 <Text style={{
                   fontFamily: 'Inter_700Bold',

@@ -14,6 +14,7 @@
     "date-fns": "^4.4.0",
     "expo": "~56.0.11",
     "expo-auth-session": "~56.0.14",
+    "expo-blur": "~56.0.3",
     "expo-document-picker": "~56.0.4",
     "expo-font": "~56.0.6",
     "expo-haptics": "~56.0.3",

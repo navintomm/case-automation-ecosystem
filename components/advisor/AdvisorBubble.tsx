@@ -12,6 +12,7 @@ import {
   Pressable,
   useWindowDimensions,
 } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import { usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import Reanimated, {
@@ -243,6 +244,7 @@ function AdvisorPanelContent({ onClose }: { onClose: () => void }) {
   const sendMessage = useCallback(
     (text: string) => {
       if (!text.trim()) return;
+      if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
       const now = new Date();
       const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
@@ -512,9 +514,11 @@ export default function AdvisorBubble() {
     <>
       {/* ── Floating Bubble ── */}
       <TouchableOpacity
-        // BUG-013: lower z-index below drawer (8000) when drawer is open
         style={[styles.bubble, drawerOpen && { zIndex: 100 }]}
-        onPress={togglePanel}
+        onPress={() => {
+          if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          togglePanel();
+        }}
         activeOpacity={0.85}
         accessibilityLabel="Open ADVISOR"
         accessibilityRole="button"
