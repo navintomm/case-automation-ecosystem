@@ -10,6 +10,7 @@ import {
   Animated,
   KeyboardAvoidingView,
   Pressable,
+  useWindowDimensions,
 } from 'react-native';
 import { usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -457,12 +458,14 @@ const ADVISOR_VISIBLE_ROUTES = new Set([
 export default function AdvisorBubble() {
   const { isOpen, unreadCount, togglePanel, closePanel, drawerOpen } = useAdvisorStore();
   const pathname = usePathname();
+  const { width } = useWindowDimensions();
+  const isDesktop = Platform.OS === 'web' && width >= 768;
 
-  // Web: slide-in drawer from right
+  // Desktop Web: slide-in drawer from right
   const slideAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (Platform.OS === 'web') {
+    if (isDesktop) {
       Animated.spring(slideAnim, {
         toValue: isOpen ? 1 : 0,
         useNativeDriver: false,
@@ -477,10 +480,10 @@ export default function AdvisorBubble() {
     outputRange: [440, 0],
   });
 
-  // Mobile: use simple modal-like overlay (BottomSheet needs native context)
+  // Mobile (Web or Native): use simple modal-like overlay
   const mobileSlide = useRef(new Animated.Value(0)).current;
   useEffect(() => {
-    if (Platform.OS !== 'web') {
+    if (!isDesktop) {
       Animated.spring(mobileSlide, {
         toValue: isOpen ? 1 : 0,
         useNativeDriver: true,
@@ -521,8 +524,8 @@ export default function AdvisorBubble() {
         {unreadCount > 0 && <View style={styles.badge} />}
       </TouchableOpacity>
 
-      {/* ── Web: Right-side drawer ── */}
-      {Platform.OS === 'web' && (
+      {/* ── Desktop Web: Right-side drawer ── */}
+      {isDesktop && (
         <>
           {isOpen && (
             <Pressable style={styles.webBackdrop} onPress={closePanel} />
@@ -539,8 +542,8 @@ export default function AdvisorBubble() {
         </>
       )}
 
-      {/* ── Mobile: Slide-up panel ── */}
-      {Platform.OS !== 'web' && isOpen && (
+      {/* ── Mobile/Tablet: Slide-up panel ── */}
+      {!isDesktop && isOpen && (
         <>
           <Animated.View style={[styles.mobileBackdrop, { opacity: mobileOpacity }]}>
             <Pressable style={StyleSheet.absoluteFill} onPress={closePanel} />

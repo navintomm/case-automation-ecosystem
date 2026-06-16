@@ -24,7 +24,7 @@ export default function LandingScreen() {
     : FadeInUp.duration(400).delay(200).springify();
 
   return (
-    <SafeAreaView style={{ flex: 1, width: '100%' }} edges={['top', 'bottom']}>
+    <SafeAreaView style={{ flex: 1, width: '100%', overflow: 'hidden' }} edges={['top', 'bottom']}>
       <StatusBar style="light" />
       
       {/* Background Layer 1: Deep navy gradient */}
