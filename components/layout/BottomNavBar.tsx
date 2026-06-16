@@ -31,7 +31,7 @@ export default function BottomNavBar({
     Toast.show({
       type: 'success',
       text1: 'Draft Saved',
-      text2: 'Your legal matter draft has been updated locally.',
+      text2: 'Your legal case file draft has been updated locally.',
       position: 'top',
       visibilityTime: 3000,
     });

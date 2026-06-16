@@ -76,7 +76,7 @@ export default function GlobalBottomTabs() {
       {activeRole === 'advocate' && (
         <>
           {renderTab('Home', 'home', '/dashboard')}
-          {renderTab('Matters', 'folder', '/matter-detail')} {/* Note: matter-detail usually needs ID, but mocked for now */}
+          {renderTab('Case Files', 'folder', '/matter-detail')} {/* Note: matter-detail usually needs ID, but mocked for now */}
           {renderTab('+Draft', 'add', '/create-draft', true)}
           {renderTab('Tasks', 'checkmark-circle', '/dashboard')} {/* Pointing to dashboard for now */}
           {renderTab('Knowledge', 'library', '/knowledge-repository')}
