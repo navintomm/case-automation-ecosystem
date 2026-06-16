@@ -89,7 +89,7 @@ const Illus1 = () => (
             transform: [
               { rotate: `${(i - 1) * 12}deg` }, 
               { translateY: Math.abs(i - 1) * 15 },
-              { translateX: (i - 1) * 40 }
+              { translateX: (i - 1) * 30 }
             ] 
           }]}
         >
@@ -365,8 +365,8 @@ const styles = StyleSheet.create({
   textZone: {
     flex: 0.55,
     alignItems: 'center',
-    paddingHorizontal: 32,
-    gap: 16,
+    paddingHorizontal: 20,
+    gap: 12,
   },
   tagPill: {
     borderRadius: 999,
@@ -383,10 +383,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'DMSerifDisplay_400Regular',
-    fontSize: 32,
+    fontSize: 28,
     color: '#1A1A2E',
     textAlign: 'center',
-    lineHeight: 40,
+    lineHeight: 36,
   },
   subtitle: {
     fontFamily: 'Inter_500Medium',
@@ -396,11 +396,11 @@ const styles = StyleSheet.create({
   },
   description: {
     fontFamily: 'Inter_400Regular',
-    fontSize: 15,
+    fontSize: 14,
     color: '#5A6478',
     textAlign: 'center',
-    lineHeight: 24,
-    maxWidth: 340,
+    lineHeight: 22,
+    maxWidth: '100%',
   },
   bottomNav: {
     position: 'absolute',
@@ -492,12 +492,12 @@ const styles = StyleSheet.create({
   },
   stepCol: {
     alignItems: 'center',
-    width: 40,
+    width: 32,
   },
   stepNode: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     backgroundColor: '#FFF',
     borderWidth: 2,
     borderColor: colors.gold,
@@ -518,22 +518,22 @@ const styles = StyleSheet.create({
     color: colors.gold,
   },
   stepLabel: {
-    fontSize: 10,
+    fontSize: 9,
     fontFamily: 'Inter_500Medium',
     color: colors.textMuted,
     marginTop: 8,
-    width: 60,
+    width: 50,
     textAlign: 'center',
     position: 'absolute',
-    top: 45,
+    top: 36,
   },
   stepLine: {
-    width: 30,
+    width: 20,
     height: 2,
     backgroundColor: colors.gold,
     opacity: 0.5,
-    marginTop: 20,
-    marginHorizontal: -5,
+    marginTop: 16,
+    marginHorizontal: -2,
   },
   illusCenterCol: {
     width: '100%',

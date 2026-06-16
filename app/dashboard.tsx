@@ -113,30 +113,19 @@ export default function AdvocateDashboard() {
   const ListHeader = (
     <View>
       {/* Summary Stats Row */}
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.statsRow}
-        data={[
+      <View style={styles.statsContainer}>
+        {[
           { label: 'Active Case Files', value: activeMatters.length.toString(), color: colors.navy },
           { label: 'Pending Tasks', value: tasks.length.toString(), color: colors.warning },
           { label: 'Due Today', value: '3', color: colors.error },
           { label: 'Completed', value: '8', color: colors.navy },
-        ]}
-        keyExtractor={item => item.label}
-        renderItem={({ item }) => (
-          <View style={styles.statCard}>
+        ].map((item, index) => (
+          <View key={index} style={styles.statCard}>
             <Text style={[styles.statNumber, { color: item.color }]}>{item.value}</Text>
             <Text style={styles.statLabel}>{item.label}</Text>
           </View>
-        )}
-      />
-
-      {/* Create Button */}
-      <TouchableOpacity style={styles.createBtn} onPress={handleCreateDraft}>
-        <Ionicons name="add-circle" size={20} color={colors.navy} style={{ marginRight: 8 }} />
-        <Text style={styles.createBtnText}>Create New Draft</Text>
-      </TouchableOpacity>
+        ))}
+      </View>
 
       {/* Active Matters Section */}
       <View style={styles.sectionHeader}>
@@ -306,16 +295,19 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingBottom: 100, // Leave room for bottom tabs
   },
-  statsRow: {
+  statsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     paddingHorizontal: 20,
     gap: 12,
-    marginBottom: 24,
+    marginBottom: 32,
+    justifyContent: 'space-between',
   },
   statCard: {
     backgroundColor: '#FFFFFF',
     borderRadius: radius.lg,
     padding: 16,
-    minWidth: 100,
+    width: '48%',
     alignItems: 'center',
     ...cardShadow,
   },
@@ -330,21 +322,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     color: colors.textMuted,
     textAlign: 'center',
-  },
-  createBtn: {
-    backgroundColor: colors.gold,
-    borderRadius: radius.full,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 54,
-    marginHorizontal: 20,
-    marginBottom: 32,
-  },
-  createBtnText: {
-    color: colors.navy,
-    fontSize: 16,
-    fontFamily: 'Inter_700Bold',
   },
   sectionHeader: {
     flexDirection: 'row',
