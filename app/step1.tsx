@@ -637,7 +637,7 @@ export default function Step1Screen() {
 
             {/* 1.8 Language Card */}
             <TouchableOpacity
-              activeOpacity={0.95}
+              activeOpacity={1}
               onPress={() => setActiveSection('language')}
               style={[
                 styles.card,
@@ -655,7 +655,17 @@ export default function Step1Screen() {
                         styles.langButton,
                         isActive ? styles.langButtonActive : styles.langButtonInactive,
                       ]}
-                      onPress={() => setField('language', lang)}
+                      onPress={(e) => {
+                        if (Platform.OS === 'web') e.stopPropagation();
+                        setField('language', lang);
+                        if (lang === 'Malayalam') {
+                          Toast.show({
+                            type: 'info',
+                            text1: 'Language set to Malayalam',
+                            text2: 'Note: Full Malayalam drafting support is in beta.',
+                          });
+                        }
+                      }}
                     >
                       <Text
                         style={[
