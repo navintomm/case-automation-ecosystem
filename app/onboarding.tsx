@@ -356,25 +356,31 @@ const styles = StyleSheet.create({
   slideContainer: {
     width,
     flex: 1,
-    paddingBottom: 100, // Make room for footer
+    paddingBottom: 120, // Make extra room for footer on all devices
     justifyContent: 'center',
     alignItems: 'center',
   },
   slideInner: {
     width: '100%',
     maxWidth: 500,
+    flex: 1,
     alignItems: 'center',
-    gap: 32,
+    justifyContent: 'center',
+    paddingVertical: 20,
   },
   illustrationZone: {
+    flex: 1,
+    minHeight: 160,
+    maxHeight: 280,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 240,
+    width: '100%',
   },
   textZone: {
     alignItems: 'center',
     paddingHorizontal: 20,
     gap: 12,
+    paddingTop: 20,
   },
   tagPill: {
     borderRadius: 999,
