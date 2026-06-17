@@ -36,7 +36,14 @@ export default function AdvocateDashboard() {
   const [refreshing, setRefreshing] = useState(false);
   const [tasks, setTasks] = useState(INITIAL_TASKS);
 
+  const [greeting, setGreeting] = useState('Good morning');
+
   useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting('Good morning');
+    else if (hour < 18) setGreeting('Good afternoon');
+    else setGreeting('Good evening');
+
     const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
@@ -93,8 +100,10 @@ export default function AdvocateDashboard() {
 
     return (
       <Swipeable renderRightActions={renderRightActions}>
-        <View style={styles.taskRow}>
-          <View style={[styles.priorityDot, { backgroundColor: item.priority === 'high' ? colors.error : colors.warning }]} />
+        <View style={[styles.taskRow, item.priority === 'high' && { borderLeftWidth: 3, borderLeftColor: colors.error }]}>
+          <TouchableOpacity style={{ marginRight: 12 }}>
+            <Ionicons name="ellipse-outline" size={22} color={colors.textMuted} style={{ opacity: 0.5 }} />
+          </TouchableOpacity>
           <View style={styles.taskContent}>
             <Text style={styles.taskDesc}>{item.desc}</Text>
             <Text style={styles.taskAssignee}>Assigned to: {item.assignee}</Text>
@@ -115,14 +124,17 @@ export default function AdvocateDashboard() {
       {/* Summary Stats Row */}
       <View style={styles.statsContainer}>
         {[
-          { label: 'Active Case Files', value: activeMatters.length.toString(), color: colors.navy },
-          { label: 'Pending Tasks', value: tasks.length.toString(), color: colors.warning },
-          { label: 'Due Today', value: '3', color: colors.error },
-          { label: 'Completed', value: '8', color: colors.navy },
+          { label: 'Active Case Files', value: activeMatters.length.toString(), color: colors.navy, icon: 'folder-open' },
+          { label: 'Pending Tasks', value: tasks.length.toString(), color: colors.warning, icon: 'time' },
+          { label: 'Due Today', value: '3', color: colors.error, icon: 'alert-circle' },
+          { label: 'Completed', value: '8', color: '#10B981', icon: 'checkmark-done' }, // Emerald green for completed
         ].map((item, index) => (
           <View key={index} style={styles.statCard}>
-            <Text style={[styles.statNumber, { color: item.color }]}>{item.value}</Text>
-            <Text style={styles.statLabel}>{item.label}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+              <Ionicons name={item.icon as any} size={22} color={item.color} style={{ opacity: 0.8 }} />
+              <Text style={[styles.statNumber, { color: item.color }]}>{item.value}</Text>
+            </View>
+            <Text style={styles.statLabel} numberOfLines={1}>{item.label}</Text>
           </View>
         ))}
       </View>
@@ -180,7 +192,7 @@ export default function AdvocateDashboard() {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <Text style={styles.headerTitle}>CASE</Text>
-          <Text style={styles.headerSub}>Good morning, Adv. Priya</Text>
+          <Text style={styles.headerSub}>{greeting}, Adv. Priya</Text>
         </View>
         <View style={styles.headerRight}>
           <TouchableOpacity 
@@ -308,20 +320,19 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     padding: 16,
     width: '48%',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     ...cardShadow,
   },
   statNumber: {
     fontSize: 28,
-    fontFamily: 'Inter_700Bold',
+    fontFamily: 'DMSerifDisplay_400Regular',
     color: colors.navy,
-    marginBottom: 4,
   },
   statLabel: {
-    fontSize: 12,
-    fontFamily: 'Inter_400Regular',
+    fontSize: 13,
+    fontFamily: 'Inter_500Medium',
     color: colors.textMuted,
-    textAlign: 'center',
+    marginTop: 8,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -401,25 +412,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     borderRadius: radius.md,
-    padding: 14,
+    padding: 16,
     marginHorizontal: 20,
     marginBottom: 12,
     ...cardShadow,
-  },
-  priorityDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: 12,
   },
   taskContent: {
     flex: 1,
   },
   taskDesc: {
     fontSize: 14,
-    fontFamily: 'Inter_500Medium',
-    color: colors.textPrimary,
-    marginBottom: 2,
+    fontFamily: 'Inter_600SemiBold',
+    color: colors.navy,
+    marginBottom: 4,
   },
   taskAssignee: {
     fontSize: 12,

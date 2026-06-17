@@ -334,7 +334,7 @@ export default function Step1Screen() {
               ]}
             >
               <View style={[styles.cardHeaderRow, { paddingBottom: 12 }]}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1, paddingRight: 8 }}>
                   <TouchableOpacity
                     onPress={(e) => {
                       e.stopPropagation();
@@ -479,12 +479,20 @@ export default function Step1Screen() {
                             isLast={index === leftParties.length - 1}
                           />
                         ))}
-                        <TouchableOpacity
-                          onPress={() => handleOpenPartyModal('Petitioner')}
-                          style={styles.columnAddButton}
-                        >
-                          <Text style={styles.columnAddButtonText}>+ Add Petitioner</Text>
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', gap: 8, marginTop: 8 }}>
+                          <TouchableOpacity
+                            onPress={() => handleOpenPartyModal('Petitioner')}
+                            style={[styles.columnAddButton, { flex: 1, marginTop: 0 }]}
+                          >
+                            <Text style={styles.columnAddButtonText}>+ Petitioner</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => handleOpenPartyModal('Plaintiff')}
+                            style={[styles.columnAddButton, { flex: 1, marginTop: 0 }]}
+                          >
+                            <Text style={styles.columnAddButtonText}>+ Plaintiff</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
 
@@ -503,12 +511,20 @@ export default function Step1Screen() {
                             isLast={index === rightParties.length - 1}
                           />
                         ))}
-                        <TouchableOpacity
-                          onPress={() => handleOpenPartyModal('Respondent')}
-                          style={styles.columnAddButton}
-                        >
-                          <Text style={styles.columnAddButtonText}>+ Add Respondent</Text>
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', gap: 8, marginTop: 8 }}>
+                          <TouchableOpacity
+                            onPress={() => handleOpenPartyModal('Respondent')}
+                            style={[styles.columnAddButton, { flex: 1, marginTop: 0 }]}
+                          >
+                            <Text style={styles.columnAddButtonText}>+ Respondent</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() => handleOpenPartyModal('Defendant')}
+                            style={[styles.columnAddButton, { flex: 1, marginTop: 0 }]}
+                          >
+                            <Text style={styles.columnAddButtonText}>+ Defendant</Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
                   </View>
