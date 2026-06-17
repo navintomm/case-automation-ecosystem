@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, SafeAreaView, Platform } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, SafeAreaView, Platform, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useOnboardingStore } from '../store/onboardingStore';
@@ -194,7 +194,11 @@ const Slide = ({ slide, index, scrollX }: any) => {
 
   return (
     <Animated.View style={[styles.slideContainer, animatedStyle]}>
-      <View style={styles.slideInner}>
+      <ScrollView 
+        contentContainerStyle={styles.slideInner}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+      >
         {/* Illustration Zone */}
         <View style={styles.illustrationZone}>
           {getIllustration(slide.id)}
@@ -210,7 +214,7 @@ const Slide = ({ slide, index, scrollX }: any) => {
           <Text style={styles.subtitle}>{slide.subtitle}</Text>
           <Text style={styles.description}>{slide.description}</Text>
         </View>
-      </View>
+      </ScrollView>
     </Animated.View>
   );
 };
@@ -370,7 +374,7 @@ const styles = StyleSheet.create({
   },
   illustrationZone: {
     flex: 1,
-    minHeight: 160,
+    minHeight: 120,
     maxHeight: 280,
     justifyContent: 'center',
     alignItems: 'center',
@@ -379,8 +383,8 @@ const styles = StyleSheet.create({
   textZone: {
     alignItems: 'center',
     paddingHorizontal: 20,
-    gap: 12,
-    paddingTop: 20,
+    gap: 8,
+    paddingTop: 8,
   },
   tagPill: {
     borderRadius: 999,
@@ -397,23 +401,23 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'DMSerifDisplay_400Regular',
-    fontSize: 28,
+    fontSize: 26,
     color: '#1A1A2E',
     textAlign: 'center',
-    lineHeight: 36,
+    lineHeight: 34,
   },
   subtitle: {
     fontFamily: 'Inter_500Medium',
-    fontSize: 15,
+    fontSize: 14,
     color: '#C9963A',
     textAlign: 'center',
   },
   description: {
     fontFamily: 'Inter_400Regular',
-    fontSize: 14,
+    fontSize: 13,
     color: '#5A6478',
     textAlign: 'center',
-    lineHeight: 22,
+    lineHeight: 20,
     maxWidth: '100%',
   },
   bottomNav: {

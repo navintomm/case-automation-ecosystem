@@ -9,6 +9,7 @@ import {
   TextInput,
   SafeAreaView,
   Platform,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, radius } from '../../theme/tokens';
@@ -117,74 +118,77 @@ export default function CaseDropdown({
           activeOpacity={1}
           onPress={() => setModalVisible(false)}
         >
-          <View
-            style={[
-              styles.modalContent,
-              Platform.OS === 'web' && styles.modalContentWeb,
-            ]}
-          >
-            <SafeAreaView style={{ flex: 1 }}>
-              <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>Select {label}</Text>
-                <TouchableOpacity onPress={() => setModalVisible(false)}>
-                  <Ionicons name="close" size={24} color={colors.textPrimary} />
-                </TouchableOpacity>
-              </View>
-
-              {searchable && (
-                <View style={styles.searchBarContainer}>
-                  <Ionicons name="search" size={18} color={colors.textMuted} style={styles.searchIcon} />
-                  <TextInput
-                    style={styles.searchInput}
-                    placeholder="Search options..."
-                    placeholderTextColor={colors.textMuted}
-                    value={searchQuery}
-                    onChangeText={setSearchQuery}
-                    autoCorrect={false}
-                    {...Platform.select({
-                      web: {
-                        outlineStyle: 'none',
-                      },
-                    })}
-                  />
+          <TouchableWithoutFeedback>
+            <View
+              style={[
+                styles.modalContent,
+                Platform.OS === 'web' && styles.modalContentWeb,
+              ]}
+            >
+              <SafeAreaView style={{ flex: 1 }}>
+                <View style={styles.modalHeader}>
+                  <Text style={styles.modalTitle}>Select {label}</Text>
+                  <TouchableOpacity onPress={() => setModalVisible(false)}>
+                    <Ionicons name="close" size={24} color={colors.textPrimary} />
+                  </TouchableOpacity>
                 </View>
-              )}
 
-              <FlatList
-                data={filteredOptions}
-                keyExtractor={(item) => item.value}
-                renderItem={({ item }) => {
-                  const isSelected = item.value === value;
-                  return (
-                    <TouchableOpacity
-                      style={[
-                        styles.optionItem,
-                        isSelected && styles.optionItemSelected,
-                      ]}
-                      onPress={() => handleSelect(item.value)}
-                    >
-                      <Text
-                        style={[
-                          styles.optionText,
-                          isSelected && styles.optionTextSelected,
-                        ]}
-                      >
-                        {item.label}
-                      </Text>
-                      {isSelected && (
-                        <Ionicons name="checkmark" size={18} color={colors.gold} />
-                      )}
-                    </TouchableOpacity>
-                  );
-                }}
-                ListEmptyComponent={
-                  <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>No matches found</Text>
+                {searchable && (
+                  <View style={styles.searchBarContainer}>
+                    <Ionicons name="search" size={18} color={colors.textMuted} style={styles.searchIcon} />
+                    <TextInput
+                      style={styles.searchInput}
+                      placeholder="Search options..."
+                      placeholderTextColor={colors.textMuted}
+                      value={searchQuery}
+                      onChangeText={setSearchQuery}
+                      autoCorrect={false}
+                      {...Platform.select({
+                        web: {
+                          outlineStyle: 'none',
+                        },
+                      })}
+                    />
                   </View>
-                }
-              />
-            </SafeAreaView>
-          </View>
+                )}
+
+                <FlatList
+                  data={filteredOptions}
+                  keyExtractor={(item) => item.value}
+                  keyboardShouldPersistTaps="handled"
+                  renderItem={({ item }) => {
+                    const isSelected = item.value === value;
+                    return (
+                      <TouchableOpacity
+                        style={[
+                          styles.optionItem,
+                          isSelected && styles.optionItemSelected,
+                        ]}
+                        onPress={() => handleSelect(item.value)}
+                      >
+                        <Text
+                          style={[
+                            styles.optionText,
+                            isSelected && styles.optionTextSelected,
+                          ]}
+                        >
+                          {item.label}
+                        </Text>
+                        {isSelected && (
+                          <Ionicons name="checkmark" size={18} color={colors.gold} />
+                        )}
+                      </TouchableOpacity>
+                    );
+                  }}
+                  ListEmptyComponent={
+                    <View style={styles.emptyContainer}>
+                      <Text style={styles.emptyText}>No matches found</Text>
+                    </View>
+                  }
+                />
+              </SafeAreaView>
+            </View>
+          </TouchableWithoutFeedback>
         </TouchableOpacity>
       </Modal>
     </View>
