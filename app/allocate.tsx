@@ -15,6 +15,7 @@ import { colors, radius } from '../theme/tokens';
 import { useCaseStore } from '../store/caseStore';
 import { useClerkStore, mockClerks } from '../store/clerkStore';
 import CaseDatePicker from '../components/ui/CaseDatePicker';
+import Toast from 'react-native-toast-message';
 
 type Priority = 'Normal' | 'High' | 'Urgent';
 
@@ -50,6 +51,13 @@ export default function AllocateScreen() {
     setAllocationField('deadline', deadline);
     setAllocationField('instructions', instructions);
     setAllocatedClerkName(selectedClerk?.name ?? null);
+    
+    Toast.show({
+      type: 'success',
+      text1: 'WhatsApp Alert Sent \u2705',
+      text2: `Task allocated and message sent to ${selectedClerk?.name ?? 'Clerk'}`,
+    });
+    
     router.push('/success' as any);
   };
 

@@ -65,11 +65,12 @@ export default function AdminDashboardScreen() {
     }, 1000);
   };
 
-  const activities = [
-    { id: 1, action: 'User added', user: 'Admin', target: 'Arun Nair (Advocate)', time: '10 mins ago', icon: 'person-add', color: '#3B82F6' },
-    { id: 2, action: 'Knowledge Base updated', user: 'System', target: 'Kerala High Court Rules v2', time: '1 hr ago', icon: 'book', color: '#8B5CF6' },
-    { id: 3, action: 'Draft generated', user: 'Adv. Priya', target: 'MTR-10492', time: '2 hrs ago', icon: 'document', color: '#10B981' },
-    { id: 4, action: 'Login failed', user: 'Unknown IP', target: 'Attempted Admin login', time: '5 hrs ago', icon: 'warning', color: '#EF4444', isError: true },
+  const auditTrail = [
+    { id: 1, action: 'Draft generated', user: 'Adv. Priya Menon', target: 'CC-09', time: '10 mins ago', icon: 'document-text', color: '#10B981' },
+    { id: 2, action: 'Task allocated', user: 'Adv. Priya Menon', target: 'Task: File Consumer Complaint -> Clerk Anitha', time: '1 hr ago', icon: 'person-add', color: '#3B82F6' },
+    { id: 3, action: 'Party name modified', user: 'Clerk Anitha', target: 'Rajesh P. vs State -> Rajesh P. vs State of Kerala', time: '2 hrs ago', icon: 'create', color: '#F59E0B' },
+    { id: 4, action: 'Matter opened', user: 'Adv. Arun Nair', target: 'Divorce Petition: Anjali R.', time: '5 hrs ago', icon: 'folder-open', color: '#8B5CF6' },
+    { id: 5, action: 'WhatsApp Alert sent', user: 'System', target: 'Hearing Reminder -> Adv. Arun Nair', time: '1 day ago', icon: 'logo-whatsapp', color: '#25D366' },
   ];
 
   const ListHeader = (
@@ -161,8 +162,9 @@ export default function AdminDashboardScreen() {
         {/* Analytics Section */}
         <Animated.View entering={FadeInDown.delay(550).springify()}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Document Generation Trends</Text>
+            <Text style={styles.sectionTitle}>Office Productivity Dashboard</Text>
           </View>
+          <Text style={{ fontFamily: 'Inter_500Medium', color: colors.textMuted, marginHorizontal: 20, marginBottom: 12 }}>Document Generation Trends (This Month)</Text>
           <View style={[styles.statCard, { padding: 8, marginBottom: 24 }]}>
             <LineChart
               data={{
@@ -185,19 +187,44 @@ export default function AdminDashboardScreen() {
               style={{ borderRadius: 16 }}
             />
           </View>
+
+          <Text style={{ fontFamily: 'Inter_500Medium', color: colors.textMuted, marginHorizontal: 20, marginBottom: 12 }}>Advocate Workload (Active Matters)</Text>
+          <View style={[styles.statCard, { padding: 8, marginBottom: 24 }]}>
+            <LineChart
+              data={{
+                labels: ["Adv. Priya", "Adv. Arun", "Adv. Rajesh", "Adv. Meena"],
+                datasets: [{ data: [14, 8, 22, 5] }]
+              }}
+              width={isTablet ? width - 80 : width - 56}
+              height={220}
+              chartConfig={{
+                backgroundColor: "#ffffff",
+                backgroundGradientFrom: "#ffffff",
+                backgroundGradientTo: "#ffffff",
+                decimalPlaces: 0,
+                color: (opacity = 1) => `rgba(59, 130, 246, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(154, 163, 178, ${opacity})`,
+                propsForDots: { r: "5", strokeWidth: "2", stroke: "#3B82F6" },
+                propsForBackgroundLines: { stroke: "#E2E0DA", strokeDasharray: "" },
+                fillShadowGradient: "#3B82F6",
+                fillShadowGradientOpacity: 0.2,
+              }}
+              style={{ borderRadius: 16 }}
+            />
+          </View>
         </Animated.View>
 
         {/* Recent Activity Timeline */}
         <Animated.View entering={FadeInDown.delay(600).springify()} style={styles.activitySection}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Recent Activity</Text>
-            <TouchableOpacity onPress={() => handleMockAction('View All Activity')}>
+            <Text style={styles.sectionTitle}>System Audit Trail</Text>
+            <TouchableOpacity onPress={() => handleMockAction('View Full Audit Log')}>
               <Text style={styles.sectionAction}>View All</Text>
             </TouchableOpacity>
           </View>
           
           <View style={styles.timelineContainer}>
-            {activities.map((act, idx, arr) => (
+            {auditTrail.map((act, idx, arr) => (
               <Animated.View entering={FadeInRight.delay(700 + (idx * 100))} key={act.id} style={styles.timelineRow}>
                 <View style={styles.timelineLeft}>
                   <View style={[styles.timelineIconBox, { backgroundColor: `${act.color}15`, borderColor: `${act.color}30` }]}>

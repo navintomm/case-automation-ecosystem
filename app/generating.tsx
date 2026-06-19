@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Platform } from
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInDown, FadeIn, useReducedMotion, useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
+import Toast from 'react-native-toast-message';
 import { colors, radius } from '../theme/tokens';
 
 const STEPS = [
@@ -57,6 +58,11 @@ export default function GeneratingScreen() {
       return () => clearTimeout(timer);
     } else {
       setIsComplete(true);
+      Toast.show({
+        type: 'success',
+        text1: 'WhatsApp Alert Sent \u2705',
+        text2: `Draft Ready notification sent to Advocate and Client`,
+      });
     }
   }, [currentStepIndex]);
 

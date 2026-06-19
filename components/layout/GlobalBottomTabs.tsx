@@ -86,6 +86,7 @@ export default function GlobalBottomTabs() {
       {activeRole === 'clerk' && (
         <>
           {renderTab('My Tasks', 'clipboard', '/clerk-portal')}
+          {renderTab('Calendar', 'calendar', '/calendar')}
           {renderTab('Completed', 'checkmark-done-circle', '/clerk-portal')}
           {renderTab('Knowledge', 'library', '/knowledge-repository')}
         </>
