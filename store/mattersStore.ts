@@ -15,6 +15,7 @@ export interface Matter {
   documentType?: string;
   court?: string;
   parties?: string; // e.g. "Suresh Kumar vs State of Kerala"
+  nextHearingDate?: string; // e.g. "2026-06-25"
 }
 
 interface MattersState {
@@ -40,6 +41,7 @@ const mockMatters: Matter[] = [
     currentStep: 3,
     createdAt: '2026-06-14T10:00:00Z',
     updatedAt: '2026-06-15T14:00:00Z',
+    nextHearingDate: '2026-06-20',
   },
   {
     id: '2',
@@ -56,6 +58,7 @@ const mockMatters: Matter[] = [
     currentStep: 4,
     createdAt: '2026-06-12T09:00:00Z',
     updatedAt: '2026-06-13T16:00:00Z',
+    nextHearingDate: '2026-06-24',
   },
   {
     id: '3',
