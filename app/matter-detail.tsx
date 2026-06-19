@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_600SemiBold',
   },
   tabContent: {
-    minHeight: 150,
+    minHeight: 80,
   },
   emptyTab: {
     alignItems: 'center',
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
   },
   bottomActions: {
-    marginTop: 40,
+    marginTop: 24,
     gap: 12,
   },
   primaryBtn: {

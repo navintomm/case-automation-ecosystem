@@ -227,16 +227,7 @@ export default function OnboardingScreen() {
   const scrollX = useSharedValue(0);
   const interactionStarted = useRef(false);
 
-  // Auto-advance every 6 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (!interactionStarted.current && currentIndex < SLIDES.length - 1) {
-        const nextIndex = currentIndex + 1;
-        flatListRef.current?.scrollToOffset({ offset: nextIndex * width, animated: true });
-      }
-    }, 10000);
-    return () => clearInterval(timer);
-  }, [currentIndex]);
+  // Auto-advance removed to prevent "snap-back" conflict when users try to read or swipe manually.
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
