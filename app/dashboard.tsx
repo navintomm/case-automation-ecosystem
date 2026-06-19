@@ -13,7 +13,8 @@ import {
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { colors, radius, cardShadow } from '../theme/tokens';
+import { radius, cardShadow } from '../theme/tokens';
+import { useThemeStore } from '../store/themeStore';
 import Toast from 'react-native-toast-message';
 import { useMattersStore } from '../store/mattersStore';
 import { useNotificationsStore } from '../store/notificationsStore';
@@ -29,6 +30,8 @@ export default function AdvocateDashboard() {
   const router = useRouter();
   const { matters } = useMattersStore();
   const { getUnreadCount } = useNotificationsStore();
+  const { colors, mode } = useThemeStore();
+  const styles = useStyles(colors);
   
   const activeMatters = matters.filter(m => m.status !== 'Completed');
   const unreadNotifs = getUnreadCount();
@@ -274,7 +277,7 @@ export default function AdvocateDashboard() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = (colors: any) => StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: colors.cream,
@@ -315,14 +318,14 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     backgroundColor: colors.error,
-    borderRadius: 10,
     minWidth: 18,
+    width: 18,
     height: 18,
+    borderRadius: 9,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 4,
-    borderWidth: 1.5,
-    borderColor: colors.navy,
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
   },
   badgeText: {
     color: '#FFFFFF',
@@ -330,12 +333,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_700Bold',
   },
   avatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 44,
+    height: 44,
+    borderRadius: radius.full,
     backgroundColor: colors.gold,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
   },
   avatarText: {
     color: colors.navy,
@@ -355,7 +360,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   statCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     borderRadius: radius.lg,
     padding: 16,
     width: '48%',
@@ -458,7 +463,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   matterCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     borderRadius: radius.lg,
     width: 220,
     padding: 16,
@@ -511,7 +516,7 @@ const styles = StyleSheet.create({
   taskRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     borderRadius: radius.md,
     padding: 16,
     marginHorizontal: 20,
@@ -556,7 +561,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 32,
     padding: 24,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     borderRadius: radius.lg,
     alignItems: 'center',
     borderWidth: 1,

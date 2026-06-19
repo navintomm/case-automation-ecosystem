@@ -10,6 +10,7 @@ import { useThemeStore } from '../store/themeStore';
 export default function AdvocateProfileScreen() {
   const router = useRouter();
   const { mode, colors, toggleTheme } = useThemeStore();
+  const styles = useStyles(colors);
 
   const handleSignOut = () => {
     router.replace('/' as any);
@@ -96,10 +97,10 @@ export default function AdvocateProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: staticColors.cream,
+    backgroundColor: colors.cream,
     paddingTop: Platform.OS === 'android' ? 24 : 0,
   },
   header: {
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   profileCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     borderRadius: radius.lg,
     padding: 24,
     alignItems: 'center',
@@ -134,17 +135,17 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
     borderWidth: 1,
-    borderColor: staticColors.border,
+    borderColor: colors.border,
   },
   avatar: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: staticColors.gold,
+    backgroundColor: colors.gold,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
-    shadowColor: staticColors.gold,
+    shadowColor: colors.gold,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -153,18 +154,18 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 32,
     fontFamily: 'Inter_700Bold',
-    color: staticColors.navy,
+    color: colors.navy,
   },
   name: {
     fontSize: 20,
     fontFamily: 'Inter_700Bold',
-    color: staticColors.textPrimary,
+    color: colors.textPrimary,
     marginBottom: 4,
   },
   email: {
     fontSize: 14,
     fontFamily: 'Inter_400Regular',
-    color: staticColors.textMuted,
+    color: colors.textMuted,
     marginBottom: 16,
   },
   badge: {
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 12,
     fontFamily: 'Inter_600SemiBold',
-    color: staticColors.navy,
+    color: colors.navy,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontFamily: 'Inter_600SemiBold',
-    color: staticColors.textMuted,
+    color: colors.textMuted,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 12,

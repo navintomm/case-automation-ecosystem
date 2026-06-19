@@ -14,28 +14,29 @@ import {
 import { useRouter } from 'expo-router';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, radius, cardShadow } from '../theme/tokens';
+import { radius, cardShadow } from '../theme/tokens';
 import { useClerkStore, Task } from '../store/clerkStore';
+import { useThemeStore } from '../store/themeStore';
 
 type FilterStatus = Task['status'];
 
 const FILTERS: FilterStatus[] = ['Pending', 'In Progress', 'Completed'];
 
-const PRIORITY_BADGE: Record<Task['priority'], { bg: string; text: string }> = {
-  Urgent: { bg: '#FDE8E8', text: colors.error },
-  High:   { bg: '#FEF3C7', text: colors.warning },
+const getPriorityBadge = (colors: any) => ({
+  Urgent: { bg: colors.error + '20', text: colors.error },
+  High:   { bg: colors.warning + '20', text: colors.warning },
   Normal: { bg: colors.cream, text: colors.textSecond },
-};
+});
 
-const STATUS_BADGE: Record<Task['status'], { bg: string; text: string }> = {
-  Pending:     { bg: '#FEF3C7', text: '#B45309' },
-  'In Progress': { bg: '#DBEAFE', text: '#1D4ED8' },
-  Completed:   { bg: '#DCFCE7', text: '#166534' },
-};
+const getStatusBadge = (colors: any) => ({
+  Pending:     { bg: colors.warning + '20', text: colors.warning },
+  'In Progress': { bg: colors.navy + '20', text: colors.navy },
+  Completed:   { bg: colors.success + '20', text: colors.success },
+});
 
-function ClerkTaskCard({ task, onPress }: { task: Task; onPress: () => void }) {
-  const pb = PRIORITY_BADGE[task.priority];
-  const sb = STATUS_BADGE[task.status];
+function ClerkTaskCard({ task, onPress, colors, styles }: { task: Task; onPress: () => void; colors: any; styles: any }) {
+  const pb = getPriorityBadge(colors)[task.priority];
+  const sb = getStatusBadge(colors)[task.status];
 
   const renderRightActions = () => (
     <TouchableOpacity
@@ -90,6 +91,8 @@ function ClerkTaskCard({ task, onPress }: { task: Task; onPress: () => void }) {
 export default function ClerkPortalScreen() {
   const router = useRouter();
   const tasks  = useClerkStore((s) => s.tasks);
+  const { colors, mode } = useThemeStore();
+  const styles = useStyles(colors);
   const [activeFilter, setActiveFilter] = useState<FilterStatus>('Pending');
   const [refreshing, setRefreshing] = useState(false);
 
@@ -167,6 +170,8 @@ export default function ClerkPortalScreen() {
         renderItem={({ item: task }) => (
           <ClerkTaskCard
             task={task}
+            colors={colors}
+            styles={styles}
             onPress={() => router.push(`/clerk-task-detail?id=${task.id}` as any)}
           />
         )}
@@ -181,7 +186,7 @@ export default function ClerkPortalScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.cream,
@@ -235,7 +240,7 @@ const styles = StyleSheet.create({
 
   // Filter bar
   filterBar: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.cardBg,
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: 12,
@@ -304,7 +309,7 @@ const styles = StyleSheet.create({
 
   // Task Card
   taskCard: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.cardBg,
     borderRadius: radius.lg,
     padding: 16,
     shadowColor: '#000',

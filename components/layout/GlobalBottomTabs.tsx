@@ -4,13 +4,16 @@ import { useRouter, usePathname } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
-import { colors, radius } from '../../theme/tokens';
+import { radius } from '../../theme/tokens';
 import { useClerkStore } from '../../store/clerkStore';
+import { useThemeStore } from '../../store/themeStore';
 
 export default function GlobalBottomTabs() {
   const router = useRouter();
   const pathname = usePathname();
   const activeRole = useClerkStore((s) => s.activeRole); // 'advocate' | 'clerk' | 'admin'
+  const { colors, mode } = useThemeStore();
+  const styles = useStyles(colors);
 
   // Do not show global tabs if we are in the drafting wizard steps or specific auth flows
   const hiddenRoutes = ['/', '/login-advocate', '/login-clerk', '/login-admin', '/step1', '/step2', '/step3', '/step4', '/verify', '/allocate', '/success'];
@@ -72,7 +75,7 @@ export default function GlobalBottomTabs() {
   };
 
   return (
-    <BlurView intensity={85} tint="light" style={styles.container}>
+    <BlurView intensity={85} tint={mode === 'dark' ? 'dark' : 'light'} style={styles.container}>
       {activeRole === 'advocate' && (
         <>
           {renderTab('Home', 'home', '/dashboard')}
@@ -105,10 +108,10 @@ export default function GlobalBottomTabs() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = (colors: any) => StyleSheet.create({
   container: {
     height: 70,
-    backgroundColor: 'rgba(255, 255, 255, 0.75)',
+    backgroundColor: colors.cardBg === '#0F172A' ? 'rgba(15, 23, 42, 0.85)' : 'rgba(255, 255, 255, 0.85)',
     borderTopWidth: 1,
     borderTopColor: colors.border,
     flexDirection: 'row',

@@ -8,6 +8,7 @@ import { useAdminStore } from '../store/adminStore';
 import { LinearGradient } from 'expo-linear-gradient';
 import Toast from 'react-native-toast-message';
 import { LineChart } from 'react-native-chart-kit';
+import { useThemeStore } from '../store/themeStore';
 
 const { width } = Dimensions.get('window');
 const isTablet = width >= 768;
@@ -20,6 +21,9 @@ export default function AdminDashboardScreen() {
   const clerkCount = users.filter(u => u.role === 'Clerk').length;
   const activeMatters = 124;
   const docsGenerated = 892;
+
+  const { colors, mode } = useThemeStore();
+  const styles = useStyles(colors);
 
   const [refreshing, setRefreshing] = useState(false);
   const headerOpacity = useSharedValue(0);
@@ -260,10 +264,10 @@ export default function AdminDashboardScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8FAFC', // slightly cooler, cleaner background for admin
+    backgroundColor: colors.cream,
     paddingTop: Platform.OS === 'android' ? 24 : 0,
   },
   scrollContent: {
@@ -367,10 +371,10 @@ const styles = StyleSheet.create({
   },
   statCard: {
     width: isTablet ? '23%' : '46%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     borderRadius: radius.xl,
     padding: 20,
-    shadowColor: '#94A3B8',
+    shadowColor: colors.navy,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.1,
     shadowRadius: 12,
@@ -397,14 +401,14 @@ const styles = StyleSheet.create({
   statNum: {
     fontSize: 28,
     fontFamily: 'Inter_700Bold',
-    color: '#0F172A',
+    color: colors.textPrimary,
     marginBottom: 4,
     letterSpacing: -0.5,
   },
   statLabel: {
     fontSize: 13,
     fontFamily: 'Inter_500Medium',
-    color: '#64748B',
+    color: colors.textMuted,
   },
   statSparkline: {
     position: 'absolute',
@@ -457,7 +461,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   timelineContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     borderRadius: radius.xl,
     padding: 24,
     marginHorizontal: 20,
