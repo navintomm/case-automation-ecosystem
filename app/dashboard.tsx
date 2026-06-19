@@ -8,6 +8,7 @@ import {
   Platform,
   FlatList,
   RefreshControl,
+  ScrollView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -35,6 +36,7 @@ export default function AdvocateDashboard() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [tasks, setTasks] = useState(INITIAL_TASKS);
+  const [viewMode, setViewMode] = useState<'list' | 'kanban'>('list');
 
   const [greeting, setGreeting] = useState('Good morning');
 
@@ -142,9 +144,20 @@ export default function AdvocateDashboard() {
       {/* Active Matters Section */}
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Active Case Files</Text>
-        <TouchableOpacity onPress={() => handleMockAction('View All Case Files')}>
-          <Text style={styles.sectionAction}>View All</Text>
-        </TouchableOpacity>
+        <View style={styles.viewToggle}>
+          <TouchableOpacity 
+            style={[styles.toggleBtn, viewMode === 'list' && styles.toggleBtnActive]}
+            onPress={() => setViewMode('list')}
+          >
+            <Ionicons name="list" size={16} color={viewMode === 'list' ? '#FFF' : colors.navy} />
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.toggleBtn, viewMode === 'kanban' && styles.toggleBtnActive]}
+            onPress={() => setViewMode('kanban')}
+          >
+            <Ionicons name="grid" size={16} color={viewMode === 'kanban' ? '#FFF' : colors.navy} />
+          </TouchableOpacity>
+        </View>
       </View>
       
       {loading ? (
@@ -158,6 +171,32 @@ export default function AdvocateDashboard() {
           <Ionicons name="folder-open-outline" size={32} color={colors.textMuted} />
           <Text style={styles.emptyText}>No active case files found.</Text>
         </View>
+      ) : viewMode === 'kanban' ? (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.kanbanBoard}>
+          {['Draft', 'In Progress', 'Awaiting Review'].map(status => {
+            const columnMatters = activeMatters.filter(m => m.status === status);
+            return (
+              <View key={status} style={styles.kanbanColumn}>
+                <View style={styles.kanbanHeader}>
+                  <Text style={styles.kanbanTitle}>{status}</Text>
+                  <View style={styles.kanbanBadge}>
+                    <Text style={styles.kanbanBadgeText}>{columnMatters.length}</Text>
+                  </View>
+                </View>
+                {columnMatters.map(m => (
+                  <View key={m.id} style={{ marginBottom: 12 }}>
+                    {renderActiveMatter({ item: m })}
+                  </View>
+                ))}
+                {columnMatters.length === 0 && (
+                  <View style={styles.kanbanEmpty}>
+                    <Text style={styles.kanbanEmptyText}>No cases</Text>
+                  </View>
+                )}
+              </View>
+            );
+          })}
+        </ScrollView>
       ) : (
         <FlatList
           horizontal
@@ -347,9 +386,71 @@ const styles = StyleSheet.create({
     color: colors.navy,
   },
   sectionAction: {
-    fontSize: 14,
     fontFamily: 'Inter_600SemiBold',
+    fontSize: 14,
     color: colors.gold,
+  },
+  viewToggle: {
+    flexDirection: 'row',
+    backgroundColor: '#E5E7EB',
+    borderRadius: radius.md,
+    padding: 4,
+  },
+  toggleBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: radius.sm,
+  },
+  toggleBtnActive: {
+    backgroundColor: colors.navy,
+  },
+  kanbanBoard: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    gap: 16,
+  },
+  kanbanColumn: {
+    width: 280,
+    backgroundColor: '#F3F4F6',
+    borderRadius: radius.lg,
+    padding: 12,
+  },
+  kanbanHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+    paddingHorizontal: 4,
+  },
+  kanbanTitle: {
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 14,
+    color: colors.navy,
+  },
+  kanbanBadge: {
+    backgroundColor: '#E5E7EB',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 12,
+  },
+  kanbanBadgeText: {
+    fontSize: 12,
+    fontFamily: 'Inter_600SemiBold',
+    color: colors.textPrimary,
+  },
+  kanbanEmpty: {
+    height: 80,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderStyle: 'dashed',
+    borderRadius: radius.md,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  kanbanEmptyText: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 13,
+    color: colors.textMuted,
   },
   mattersRow: {
     paddingHorizontal: 20,
