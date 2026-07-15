@@ -7,6 +7,7 @@ This application provides a role-based environment customized for **Advocates, C
 
 ## 🌟 Key Features
 
+
 - **Role-Based Portals:**
   - **Advocate:** Draft legal documents, manage active matters, allocate tasks, and receive AI-driven advisor recommendations.
   - **Clerk:** View and manage assigned filing tasks through a clean, swipe-to-delete Kanban-style interface.
